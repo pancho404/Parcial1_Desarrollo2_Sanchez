@@ -19,6 +19,9 @@ public class Movement : MonoBehaviour
     [SerializeField] private float dash = 10.0f;
     [SerializeField] private float jumpForce = 5.0f;
     [SerializeField] private float speedMultiplier = 2.0f;
+    [SerializeField] private float coyoteTime = 0.2f;
+    [SerializeField] private float coyoteTimeCounter;
+    private RaycastHit hit;
     private bool isDashInput = false;
     private Vector3 currentMovement;
 
@@ -33,13 +36,24 @@ public class Movement : MonoBehaviour
     }
     private void Update()
     {
+        if (IsGrounded(out hit))
+        {
+            coyoteTimeCounter = coyoteTime;
+        }
+        else
+        {
+            coyoteTimeCounter -= Time.deltaTime;
+        }
         transform.Translate(speed * Time.deltaTime * currentMovement);
     }
 
     public void OnJump(InputValue input)
     {
-        StopCoroutine(JumpCoroutine());
-        StartCoroutine(JumpCoroutine());
+        if (coyoteTimeCounter >= 0f)
+        {
+            StopCoroutine(JumpCoroutine());
+            StartCoroutine(JumpCoroutine());
+        }
     }
 
     private IEnumerator JumpCoroutine()
@@ -47,13 +61,15 @@ public class Movement : MonoBehaviour
         if (!feet)
             yield break;
 
-        RaycastHit hit;
 
         while (true)
         {
             yield return new WaitForFixedUpdate();
             if (IsGrounded(out hit))
+            {
                 rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+                coyoteTimeCounter = 0f;
+            }
             yield break;
         }
 
@@ -90,30 +106,11 @@ public class Movement : MonoBehaviour
 
     private void FixedUpdate()
     {
-      
+
         if (isDashInput)
         {
             rb.AddForce(currentMovement * dash, ForceMode.Impulse);
             isDashInput = false;
         }
-    }
-
-    public IEnumerator CoyoteTime()
-    {
-
-        if (!feet)
-            yield break;
-
-        RaycastHit feetHit;
-
-        while(true)
-        {
-            yield return new WaitForFixedUpdate();
-
-
-        }
-
-
-        yield break;
     }
 }

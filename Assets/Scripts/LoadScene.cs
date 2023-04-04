@@ -7,9 +7,13 @@ public class LoadScene : MonoBehaviour
 {
 
     [SerializeField] private int index;
+    [SerializeField] private bool working;
 
     private void OnCollisionEnter(Collision collision)
     {
-        SceneManager.LoadScene(index);
+        if (working)
+        {
+            SceneManager.LoadScene(index);
+        }
     }
 }
