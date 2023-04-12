@@ -8,6 +8,7 @@ using UnityEngine.InputSystem;
 
 public class Movement : MonoBehaviour
 {
+   
     const float maxDistance = 10;
     [Header("Setup")]
     [SerializeField] Rigidbody rb;
@@ -36,13 +37,18 @@ public class Movement : MonoBehaviour
     }
     private void Update()
     {
+        NewMethod();
+    }
+
+    private void NewMethod()
+    {
         if (IsGrounded(out hit))
         {
-            coyoteTimeCounter = coyoteTime;
+            coyoteTimeCounter = 0;
         }
         else
         {
-            coyoteTimeCounter -= Time.deltaTime;
+            coyoteTimeCounter += Time.deltaTime;
         }
         transform.Translate(speed * Time.deltaTime * currentMovement);
     }
@@ -68,7 +74,11 @@ public class Movement : MonoBehaviour
             if (IsGrounded(out hit))
             {
                 rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-                coyoteTimeCounter = 0f;
+            }
+            else if(coyoteTimeCounter<=coyoteTime && Physics.Raycast(feet.transform.position-currentMovement,Vector3.down,out hit,maxDistance))
+            {
+                rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+                coyoteTimeCounter = 0;
             }
             yield break;
         }

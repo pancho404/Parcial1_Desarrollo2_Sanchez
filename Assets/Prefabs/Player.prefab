@@ -97,6 +97,7 @@ GameObject:
   - component: {fileID: 6126498244510802788}
   - component: {fileID: 6126498244510802789}
   - component: {fileID: 6126498244510802810}
+  - component: {fileID: 7205743705521663459}
   - component: {fileID: 6126498244510802811}
   - component: {fileID: 6126498244510802808}
   m_Layer: 0
@@ -206,6 +207,21 @@ MonoBehaviour:
   dash: 10
   jumpForce: 5
   speedMultiplier: 2
+  coyoteTime: 0.2
+  coyoteTimeCounter: 0
+--- !u!114 &7205743705521663459
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6126498244510802809}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e883b12115e17254f896b227c3e778ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timeBetweenCapture: 0.2
 --- !u!54 &6126498244510802811
 Rigidbody:
   m_ObjectHideFlags: 0

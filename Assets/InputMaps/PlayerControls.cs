@@ -71,6 +71,15 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""RewindTime"",
+                    ""type"": ""Button"",
+                    ""id"": ""42a395a4-7874-45a4-b88f-a5e4c16e1a54"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -172,6 +181,17 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""action"": ""Dash"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4570a2fe-bfb5-427e-bb54-367b9da4ebbd"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""RewindTime"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -185,6 +205,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         m_World_Interact = m_World.FindAction("Interact", throwIfNotFound: true);
         m_World_Sprint = m_World.FindAction("Sprint", throwIfNotFound: true);
         m_World_Dash = m_World.FindAction("Dash", throwIfNotFound: true);
+        m_World_RewindTime = m_World.FindAction("RewindTime", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -249,6 +270,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
     private readonly InputAction m_World_Interact;
     private readonly InputAction m_World_Sprint;
     private readonly InputAction m_World_Dash;
+    private readonly InputAction m_World_RewindTime;
     public struct WorldActions
     {
         private @PlayerControls m_Wrapper;
@@ -258,6 +280,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         public InputAction @Interact => m_Wrapper.m_World_Interact;
         public InputAction @Sprint => m_Wrapper.m_World_Sprint;
         public InputAction @Dash => m_Wrapper.m_World_Dash;
+        public InputAction @RewindTime => m_Wrapper.m_World_RewindTime;
         public InputActionMap Get() { return m_Wrapper.m_World; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -282,6 +305,9 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 @Dash.started -= m_Wrapper.m_WorldActionsCallbackInterface.OnDash;
                 @Dash.performed -= m_Wrapper.m_WorldActionsCallbackInterface.OnDash;
                 @Dash.canceled -= m_Wrapper.m_WorldActionsCallbackInterface.OnDash;
+                @RewindTime.started -= m_Wrapper.m_WorldActionsCallbackInterface.OnRewindTime;
+                @RewindTime.performed -= m_Wrapper.m_WorldActionsCallbackInterface.OnRewindTime;
+                @RewindTime.canceled -= m_Wrapper.m_WorldActionsCallbackInterface.OnRewindTime;
             }
             m_Wrapper.m_WorldActionsCallbackInterface = instance;
             if (instance != null)
@@ -301,6 +327,9 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 @Dash.started += instance.OnDash;
                 @Dash.performed += instance.OnDash;
                 @Dash.canceled += instance.OnDash;
+                @RewindTime.started += instance.OnRewindTime;
+                @RewindTime.performed += instance.OnRewindTime;
+                @RewindTime.canceled += instance.OnRewindTime;
             }
         }
     }
@@ -312,5 +341,6 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         void OnInteract(InputAction.CallbackContext context);
         void OnSprint(InputAction.CallbackContext context);
         void OnDash(InputAction.CallbackContext context);
+        void OnRewindTime(InputAction.CallbackContext context);
     }
 }
