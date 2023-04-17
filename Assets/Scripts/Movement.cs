@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Assertions.Must;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
@@ -95,6 +96,7 @@ public class Movement : MonoBehaviour
         var movement = input.Get<Vector2>();
         currentMovement.x = movement.x;
         currentMovement.z = movement.y;
+        
     }
 
     public void OnSprint(InputValue input)
