@@ -46,15 +46,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Interact"",
-                    ""type"": ""Button"",
-                    ""id"": ""06e8ee2e-0e5b-44f1-8e2c-e8babf37c5b7"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
                     ""name"": ""Sprint"",
                     ""type"": ""Button"",
                     ""id"": ""73d8e4db-1368-4396-bf28-e9a7d2c8d5fa"",
@@ -78,7 +69,25 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""id"": ""42a395a4-7874-45a4-b88f-a5e4c16e1a54"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": ""Press(behavior=2)"",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""RotateCameraLeft"",
+                    ""type"": ""Button"",
+                    ""id"": ""d9a80fdf-8876-443b-9080-65c4c2fdef44"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""RotateCameraRight"",
+                    ""type"": ""Button"",
+                    ""id"": ""c672f66d-d395-4a86-876b-38c974979585"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
                     ""initialStateCheck"": false
                 }
             ],
@@ -151,17 +160,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""b8b96753-d49d-492c-aa92-35891f67b461"",
-                    ""path"": ""<Keyboard>/e"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Interact"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""ce500620-f561-460e-84c3-ee2a98eb7ef0"",
                     ""path"": ""<Keyboard>/leftShift"",
                     ""interactions"": """",
@@ -192,6 +190,56 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""RewindTime"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e0c1fbd1-69e2-47c2-8ded-0866f87f2dec"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""RotateCameraLeft"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b4c578ec-bad1-4ccb-b26a-60460227e979"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""RotateCameraRight"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""ShadowInput"",
+            ""id"": ""a3f3c3f1-c6b5-4741-8a18-e046ecb004f3"",
+            ""actions"": [
+                {
+                    ""name"": ""TimeRewind"",
+                    ""type"": ""Button"",
+                    ""id"": ""d4041f5e-c68e-4e39-b55d-59dcd78b5077"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""f72f3d48-659d-4971-9068-d1831bf24e9a"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""TimeRewind"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -202,10 +250,14 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_World = asset.FindActionMap("World", throwIfNotFound: true);
         m_World_Move = m_World.FindAction("Move", throwIfNotFound: true);
         m_World_Jump = m_World.FindAction("Jump", throwIfNotFound: true);
-        m_World_Interact = m_World.FindAction("Interact", throwIfNotFound: true);
         m_World_Sprint = m_World.FindAction("Sprint", throwIfNotFound: true);
         m_World_Dash = m_World.FindAction("Dash", throwIfNotFound: true);
         m_World_RewindTime = m_World.FindAction("RewindTime", throwIfNotFound: true);
+        m_World_RotateCameraLeft = m_World.FindAction("RotateCameraLeft", throwIfNotFound: true);
+        m_World_RotateCameraRight = m_World.FindAction("RotateCameraRight", throwIfNotFound: true);
+        // ShadowInput
+        m_ShadowInput = asset.FindActionMap("ShadowInput", throwIfNotFound: true);
+        m_ShadowInput_TimeRewind = m_ShadowInput.FindAction("TimeRewind", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -269,20 +321,22 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private List<IWorldActions> m_WorldActionsCallbackInterfaces = new List<IWorldActions>();
     private readonly InputAction m_World_Move;
     private readonly InputAction m_World_Jump;
-    private readonly InputAction m_World_Interact;
     private readonly InputAction m_World_Sprint;
     private readonly InputAction m_World_Dash;
     private readonly InputAction m_World_RewindTime;
+    private readonly InputAction m_World_RotateCameraLeft;
+    private readonly InputAction m_World_RotateCameraRight;
     public struct WorldActions
     {
         private @PlayerControls m_Wrapper;
         public WorldActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
         public InputAction @Move => m_Wrapper.m_World_Move;
         public InputAction @Jump => m_Wrapper.m_World_Jump;
-        public InputAction @Interact => m_Wrapper.m_World_Interact;
         public InputAction @Sprint => m_Wrapper.m_World_Sprint;
         public InputAction @Dash => m_Wrapper.m_World_Dash;
         public InputAction @RewindTime => m_Wrapper.m_World_RewindTime;
+        public InputAction @RotateCameraLeft => m_Wrapper.m_World_RotateCameraLeft;
+        public InputAction @RotateCameraRight => m_Wrapper.m_World_RotateCameraRight;
         public InputActionMap Get() { return m_Wrapper.m_World; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -298,9 +352,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Jump.started += instance.OnJump;
             @Jump.performed += instance.OnJump;
             @Jump.canceled += instance.OnJump;
-            @Interact.started += instance.OnInteract;
-            @Interact.performed += instance.OnInteract;
-            @Interact.canceled += instance.OnInteract;
             @Sprint.started += instance.OnSprint;
             @Sprint.performed += instance.OnSprint;
             @Sprint.canceled += instance.OnSprint;
@@ -310,6 +361,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @RewindTime.started += instance.OnRewindTime;
             @RewindTime.performed += instance.OnRewindTime;
             @RewindTime.canceled += instance.OnRewindTime;
+            @RotateCameraLeft.started += instance.OnRotateCameraLeft;
+            @RotateCameraLeft.performed += instance.OnRotateCameraLeft;
+            @RotateCameraLeft.canceled += instance.OnRotateCameraLeft;
+            @RotateCameraRight.started += instance.OnRotateCameraRight;
+            @RotateCameraRight.performed += instance.OnRotateCameraRight;
+            @RotateCameraRight.canceled += instance.OnRotateCameraRight;
         }
 
         private void UnregisterCallbacks(IWorldActions instance)
@@ -320,9 +377,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @Jump.started -= instance.OnJump;
             @Jump.performed -= instance.OnJump;
             @Jump.canceled -= instance.OnJump;
-            @Interact.started -= instance.OnInteract;
-            @Interact.performed -= instance.OnInteract;
-            @Interact.canceled -= instance.OnInteract;
             @Sprint.started -= instance.OnSprint;
             @Sprint.performed -= instance.OnSprint;
             @Sprint.canceled -= instance.OnSprint;
@@ -332,6 +386,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @RewindTime.started -= instance.OnRewindTime;
             @RewindTime.performed -= instance.OnRewindTime;
             @RewindTime.canceled -= instance.OnRewindTime;
+            @RotateCameraLeft.started -= instance.OnRotateCameraLeft;
+            @RotateCameraLeft.performed -= instance.OnRotateCameraLeft;
+            @RotateCameraLeft.canceled -= instance.OnRotateCameraLeft;
+            @RotateCameraRight.started -= instance.OnRotateCameraRight;
+            @RotateCameraRight.performed -= instance.OnRotateCameraRight;
+            @RotateCameraRight.canceled -= instance.OnRotateCameraRight;
         }
 
         public void RemoveCallbacks(IWorldActions instance)
@@ -349,13 +409,64 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         }
     }
     public WorldActions @World => new WorldActions(this);
+
+    // ShadowInput
+    private readonly InputActionMap m_ShadowInput;
+    private List<IShadowInputActions> m_ShadowInputActionsCallbackInterfaces = new List<IShadowInputActions>();
+    private readonly InputAction m_ShadowInput_TimeRewind;
+    public struct ShadowInputActions
+    {
+        private @PlayerControls m_Wrapper;
+        public ShadowInputActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
+        public InputAction @TimeRewind => m_Wrapper.m_ShadowInput_TimeRewind;
+        public InputActionMap Get() { return m_Wrapper.m_ShadowInput; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(ShadowInputActions set) { return set.Get(); }
+        public void AddCallbacks(IShadowInputActions instance)
+        {
+            if (instance == null || m_Wrapper.m_ShadowInputActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_ShadowInputActionsCallbackInterfaces.Add(instance);
+            @TimeRewind.started += instance.OnTimeRewind;
+            @TimeRewind.performed += instance.OnTimeRewind;
+            @TimeRewind.canceled += instance.OnTimeRewind;
+        }
+
+        private void UnregisterCallbacks(IShadowInputActions instance)
+        {
+            @TimeRewind.started -= instance.OnTimeRewind;
+            @TimeRewind.performed -= instance.OnTimeRewind;
+            @TimeRewind.canceled -= instance.OnTimeRewind;
+        }
+
+        public void RemoveCallbacks(IShadowInputActions instance)
+        {
+            if (m_Wrapper.m_ShadowInputActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IShadowInputActions instance)
+        {
+            foreach (var item in m_Wrapper.m_ShadowInputActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_ShadowInputActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public ShadowInputActions @ShadowInput => new ShadowInputActions(this);
     public interface IWorldActions
     {
         void OnMove(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
-        void OnInteract(InputAction.CallbackContext context);
         void OnSprint(InputAction.CallbackContext context);
         void OnDash(InputAction.CallbackContext context);
         void OnRewindTime(InputAction.CallbackContext context);
+        void OnRotateCameraLeft(InputAction.CallbackContext context);
+        void OnRotateCameraRight(InputAction.CallbackContext context);
+    }
+    public interface IShadowInputActions
+    {
+        void OnTimeRewind(InputAction.CallbackContext context);
     }
 }

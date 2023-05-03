@@ -5,19 +5,28 @@ using UnityEngine.InputSystem;
 
 public class TimeRewind : MonoBehaviour
 {
-    private Vector3[] pastPositions = new Vector3[5];
+    public Vector3[] pastPositions = new Vector3[5];
     Vector3 destiny = Vector3.zero;
+    private Rigidbody rigidbody;
 
     [Header("Time")]
     [SerializeField] private float timeBetweenCapture = 0.2f;
     [SerializeField] private float timeToClean = 4f;
     [SerializeField] private float rewindDuration = 0.2f;
+    [SerializeField] private GameObject shadow;
     private float captureTimer = 0.0f;
     private float cleanTimer = 0.0f;
     private float lerpTimer = 0.0f;
     private float rewindTime = 0.0f;
     private float percentageComplete = 0.0f;
     bool isSet = false;
+
+
+    private void Awake()
+    {
+        rigidbody = GetComponent<Rigidbody>();
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -29,13 +38,11 @@ public class TimeRewind : MonoBehaviour
                 pastPositions.SetValue(Vector3.zero, i);
             }
         }
-
     }
 
     // Update is called once per frame
     void Update()
     {
-        //Debug.Log(pastPositions[0]);
         if (cleanTimer >= timeToClean)
         {
             ClearValues();
@@ -64,6 +71,7 @@ public class TimeRewind : MonoBehaviour
 
     void OnRewindTime(InputValue input)
     {
+
         bool isCoroutineStarted = false;
         if (input.isPressed)
         {
@@ -72,16 +80,17 @@ public class TimeRewind : MonoBehaviour
             {
                 if (isValidRewind(i) && !isCoroutineStarted)
                 {
-                    destiny = pastPositions[i];
-                    Debug.Log($"Destiny set to: {destiny}" +
-                        $"\nCurrent Position: {transform.position}");
+                    //destiny = pastPositions[i];
+                    destiny = shadow.transform.position;
+                    //Debug.Log($"Destiny set to: {destiny}" +
+                    //  $"\nCurrent Position: {transform.position}");
                     break;
                 }
             }
-            if (destiny == Vector3.zero)
-            {
-                transform.position = transform.position;
-            }
+            //if (destiny == Vector3.zero)
+            //{
+            //    transform.position = transform.position;
+            //}
 
             //  transform.position = destiny;
             StartCoroutine(LerpRewind());
@@ -93,7 +102,7 @@ public class TimeRewind : MonoBehaviour
             StopCoroutine(LerpRewind());
             isCoroutineStarted = false;
         }
-      
+
 
     }
 
@@ -101,19 +110,17 @@ public class TimeRewind : MonoBehaviour
     {
         var now = Time.time;
         var start = Time.time;
-        //for (var now = Time.time; now - start < rewindDuration; now = Time.time)
-        //{
-        //    transform.position = Vector3.Lerp(transform.position, destiny, (now - start) / rewindDuration);
-        //    yield return null;
-        //}
+
         while (now - start < rewindDuration)
         {
-            transform.position = Vector3.Lerp(transform.position, destiny, (now - start) / rewindDuration);
+            rigidbody.isKinematic = true;
+            transform.position = Vector3.Lerp(transform.position, destiny, percentageComplete * Time.deltaTime);
             yield return null;
             now = Time.time;
         }
-        transform.position = destiny;
-
+        rigidbody.isKinematic = false;
+        rewindTime = 0.0f;
+        //transform.position = destiny;
     }
 
     private void ClearValues()
