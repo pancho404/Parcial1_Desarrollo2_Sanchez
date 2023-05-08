@@ -281,11 +281,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7749375289864651923, guid: 67a8539a26b6f374588797cf3131e6b7, type: 3}
   m_PrefabInstance: {fileID: 54115213}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &60942483 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6126498245921189319, guid: 50bfd37b6186232409858d203a626259, type: 3}
-  m_PrefabInstance: {fileID: 6126498244962120917}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &67310705
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -954,7 +949,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &245140825
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3500,7 +3495,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c249ff36d2195140bc4db2421c9c533, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 60942483}
+  player: {fileID: 1607997373}
   speed: 0.2
   rotationCurve:
     serializedVersion: 2
@@ -3508,6 +3503,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  rigidbody: {fileID: 622565297}
 --- !u!114 &792305457
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6253,6 +6249,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5079440533117218282, guid: f16b2f79b9e60454da5bde69fd64105a, type: 3}
   m_PrefabInstance: {fileID: 802051262}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1607997373 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6126498245921189319, guid: 50bfd37b6186232409858d203a626259, type: 3}
+  m_PrefabInstance: {fileID: 6126498244962120917}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1608399418
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8181,15 +8182,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6207460006123115726, guid: 50bfd37b6186232409858d203a626259, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -8.83
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6207460006123115726, guid: 50bfd37b6186232409858d203a626259, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 4.38
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 6207460006123115726, guid: 50bfd37b6186232409858d203a626259, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -18.37
+      value: -15
       objectReference: {fileID: 0}
     - target: {fileID: 7205743705521663459, guid: 50bfd37b6186232409858d203a626259, type: 3}
       propertyPath: shadow
@@ -8230,6 +8231,30 @@ PrefabInstance:
     - target: {fileID: 7205743705521663459, guid: 50bfd37b6186232409858d203a626259, type: 3}
       propertyPath: animationCurve.m_Curve.Array.data[1].value
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7205743705521663459, guid: 50bfd37b6186232409858d203a626259, type: 3}
+      propertyPath: animationCurve.m_Curve.Array.data[0].inSlope
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7205743705521663459, guid: 50bfd37b6186232409858d203a626259, type: 3}
+      propertyPath: animationCurve.m_Curve.Array.data[1].inSlope
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7205743705521663459, guid: 50bfd37b6186232409858d203a626259, type: 3}
+      propertyPath: animationCurve.m_Curve.Array.data[0].outSlope
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7205743705521663459, guid: 50bfd37b6186232409858d203a626259, type: 3}
+      propertyPath: animationCurve.m_Curve.Array.data[1].outSlope
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7205743705521663459, guid: 50bfd37b6186232409858d203a626259, type: 3}
+      propertyPath: animationCurve.m_Curve.Array.data[0].tangentMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7205743705521663459, guid: 50bfd37b6186232409858d203a626259, type: 3}
+      propertyPath: animationCurve.m_Curve.Array.data[1].tangentMode
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7749198020387206586, guid: 50bfd37b6186232409858d203a626259, type: 3}
       propertyPath: m_Materials.Array.data[0]

@@ -67,6 +67,7 @@ public class FezManager : MonoBehaviour
                 UpdateLevelData(false);
             }
         }
+       player.transform.LookAt(playerCamera.transform);
     }
 
     private void UpdateLevelData(bool forceRebuild)
@@ -100,8 +101,7 @@ public class FezManager : MonoBehaviour
         facingDirection = GetRotationRight();
         degrees -= 90f;
         UpdateLevelData(false);
-        player.transform.Rotate(0, degrees, 0);
-        player.transform.LookAt(playerCamera.transform);
+        //player.transform.Rotate(0, degrees, 0);
     }
 
     private void OnRotateCameraLeft()

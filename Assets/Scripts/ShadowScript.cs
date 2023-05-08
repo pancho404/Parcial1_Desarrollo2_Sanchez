@@ -12,35 +12,33 @@ public class ShadowScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        StartCoroutine(MoveTowardsCourutine());
     }
 
     // Update is called once per frame
     void Update()
     {
-        //for (int i = 0; i < timeRewindScript.pastPositions.Length; i++)
-        //{
-        //    transform.position = timeRewindScript.pastPositions[i];
-        //}
-        transform.forward = player.transform.position - transform.position;
+        //transform.forward = player.transform.position - transform.position;
+        transform.position = Vector3.MoveTowards(transform.position, timeRewindScript.pastPositions[0], speed * Time.deltaTime);
     }
-    
-    private void OnTimeRewind()
+
+    private void OnRewindTIme()
     {
-        StopCoroutine(MoveTowardsCourutine());
-        while (player.transform.position != transform.position)
-        {
-            transform.position = transform.position;
-        }
+        transform.position = transform.position;
         StartCoroutine(MoveTowardsCourutine());
     }
 
     private IEnumerator MoveTowardsCourutine()
     {
 
-        transform.position = Vector3.MoveTowards(transform.position, timeRewindScript.pastPositions[0], speed * Time.deltaTime);
-
-        yield return null;
-        StartCoroutine(MoveTowardsCourutine());
+        while (transform.position == player.transform.position)
+        {
+            transform.position = transform.position;
+            if (transform.position != player.transform.position)
+            {
+                StopCoroutine(MoveTowardsCourutine());
+                break;
+            }
+            yield return null;
+        }
     }
 }

@@ -55,7 +55,6 @@ public class Movement : MonoBehaviour
             coyoteTimeCounter += Time.deltaTime;
         }
         transform.Translate(speed * Time.deltaTime * currentMovement);
-
     }
 
     public void OnJump(InputValue input)
@@ -75,7 +74,6 @@ public class Movement : MonoBehaviour
 
         while (true)
         {
-            yield return new WaitForSeconds(0.35f);
             if (IsGrounded(out hit))
             {
                 rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
@@ -137,5 +135,8 @@ public class Movement : MonoBehaviour
         degree = angle;
     }
 
-   
+    private void RotateCameraRight()
+    {
+        transform.Rotate(transform.up, 90);
+    }
 }
