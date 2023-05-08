@@ -5185,6 +5185,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 622565292}
   speed: 3
+  currentSpeed: 3
   timeRewindScript: {fileID: 622565295}
 --- !u!54 &1176391160
 Rigidbody:
