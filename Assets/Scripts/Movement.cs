@@ -9,7 +9,7 @@ using UnityEngine.InputSystem;
 
 public class Movement : MonoBehaviour
 {
-   
+
     const float maxDistance = 10;
     [Header("Setup")]
     [SerializeField] Rigidbody rb;
@@ -24,8 +24,11 @@ public class Movement : MonoBehaviour
     [SerializeField] private float coyoteTime = 0.2f;
     [SerializeField] private float coyoteTimeCounter;
     private RaycastHit hit;
+    private FezManager.FacingDirection facingDirection;
+    private float degree = 0;
     private bool isDashInput = false;
     private Vector3 currentMovement;
+    public bool isJumping = false;
 
     private float timeElapsed;
 
@@ -38,10 +41,10 @@ public class Movement : MonoBehaviour
     }
     private void Update()
     {
-        NewMethod();
+        MainMovement();
     }
 
-    private void NewMethod()
+    private void MainMovement()
     {
         if (IsGrounded(out hit))
         {
@@ -52,6 +55,7 @@ public class Movement : MonoBehaviour
             coyoteTimeCounter += Time.deltaTime;
         }
         transform.Translate(speed * Time.deltaTime * currentMovement);
+
     }
 
     public void OnJump(InputValue input)
@@ -71,23 +75,25 @@ public class Movement : MonoBehaviour
 
         while (true)
         {
-            yield return new WaitForFixedUpdate();
+            yield return new WaitForSeconds(0.35f);
             if (IsGrounded(out hit))
             {
                 rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+                isJumping = true;
             }
-            else if(coyoteTimeCounter<=coyoteTime && Physics.Raycast(feet.transform.position-currentMovement,Vector3.down,out hit,maxDistance))
+            else if (coyoteTimeCounter <= coyoteTime && Physics.Raycast(feet.transform.position - currentMovement, Vector3.down, out hit, maxDistance))
             {
+                isJumping = true;
                 rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
                 coyoteTimeCounter = 0;
             }
             yield break;
-        }
-
+        }        
     }
 
     private bool IsGrounded(out RaycastHit hit)
     {
+        isJumping = false;
         return Physics.Raycast(feet.transform.position, Vector3.down, out hit, maxDistance) && hit.distance <= minJumpDistance;
     }
 
@@ -96,7 +102,6 @@ public class Movement : MonoBehaviour
         var movement = input.Get<Vector2>();
         currentMovement.x = movement.x;
         currentMovement.z = movement.y;
-        
     }
 
     public void OnSprint(InputValue input)
@@ -125,4 +130,12 @@ public class Movement : MonoBehaviour
             isDashInput = false;
         }
     }
+
+    private void UpdateToFacingDirection(FezManager.FacingDirection newDirection, float angle)
+    {
+        facingDirection = newDirection;
+        degree = angle;
+    }
+
+   
 }

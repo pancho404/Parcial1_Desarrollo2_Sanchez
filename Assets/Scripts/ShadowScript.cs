@@ -22,7 +22,6 @@ public class ShadowScript : MonoBehaviour
         //{
         //    transform.position = timeRewindScript.pastPositions[i];
         //}
-        Debug.Log(timeRewindScript.pastPositions.Length);
         transform.forward = player.transform.position - transform.position;
     }
     

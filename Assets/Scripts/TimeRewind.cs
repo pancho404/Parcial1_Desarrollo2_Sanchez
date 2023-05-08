@@ -8,6 +8,7 @@ public class TimeRewind : MonoBehaviour
     public Vector3[] pastPositions = new Vector3[5];
     Vector3 destiny = Vector3.zero;
     private Rigidbody rigidbody;
+    [SerializeField] private AnimationCurve animationCurve;
 
     [Header("Time")]
     [SerializeField] private float timeBetweenCapture = 0.2f;
@@ -66,7 +67,8 @@ public class TimeRewind : MonoBehaviour
         }
 
         rewindTime += Time.deltaTime;
-        percentageComplete = rewindTime / rewindDuration;
+        //percentageComplete = rewindTime / rewindDuration;
+        percentageComplete = animationCurve.Evaluate(rewindTime);
     }
 
     void OnRewindTime(InputValue input)
@@ -80,19 +82,12 @@ public class TimeRewind : MonoBehaviour
             {
                 if (isValidRewind(i) && !isCoroutineStarted)
                 {
-                    //destiny = pastPositions[i];
                     destiny = shadow.transform.position;
-                    //Debug.Log($"Destiny set to: {destiny}" +
-                    //  $"\nCurrent Position: {transform.position}");
+                   
                     break;
                 }
             }
-            //if (destiny == Vector3.zero)
-            //{
-            //    transform.position = transform.position;
-            //}
-
-            //  transform.position = destiny;
+            
             StartCoroutine(LerpRewind());
             isCoroutineStarted = true;
         }
@@ -120,7 +115,6 @@ public class TimeRewind : MonoBehaviour
         }
         rigidbody.isKinematic = false;
         rewindTime = 0.0f;
-        //transform.position = destiny;
     }
 
     private void ClearValues()
