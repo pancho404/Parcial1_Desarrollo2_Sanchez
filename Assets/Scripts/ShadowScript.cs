@@ -6,7 +6,8 @@ public class ShadowScript : MonoBehaviour
 {
 
     [SerializeField] private GameObject player;
-    [SerializeField] private float speed = 1.5f;
+    [SerializeField] private float speed = 3f;
+    [SerializeField] private float currentSpeed = 3f;
     [SerializeField] private TimeRewind timeRewindScript;
 
     // Start is called before the first frame update
@@ -18,13 +19,14 @@ public class ShadowScript : MonoBehaviour
     void Update()
     {
         //transform.forward = player.transform.position - transform.position;
-        transform.position = Vector3.MoveTowards(transform.position, timeRewindScript.pastPositions[0], speed * Time.deltaTime);
+        transform.position = Vector3.MoveTowards(transform.position, timeRewindScript.pastPositions[0], currentSpeed * Time.deltaTime);
     }
 
     private void OnRewindTIme()
     {
-        transform.position = transform.position;
         StartCoroutine(MoveTowardsCourutine());
+        currentSpeed = 0;
+        StopCoroutine(MoveTowardsCourutine());
     }
 
     private IEnumerator MoveTowardsCourutine()
@@ -33,11 +35,8 @@ public class ShadowScript : MonoBehaviour
         while (transform.position == player.transform.position)
         {
             transform.position = transform.position;
-            if (transform.position != player.transform.position)
-            {
-                StopCoroutine(MoveTowardsCourutine());
-                break;
-            }
+            currentSpeed = speed;
+
             yield return null;
         }
     }
