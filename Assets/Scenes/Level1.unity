@@ -5187,6 +5187,7 @@ MonoBehaviour:
   speed: 3
   currentSpeed: 3
   timeRewindScript: {fileID: 622565295}
+  rb: {fileID: 0}
 --- !u!54 &1176391160
 Rigidbody:
   m_ObjectHideFlags: 0
