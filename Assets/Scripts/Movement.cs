@@ -61,8 +61,10 @@ public class Movement : MonoBehaviour
     {
         if (coyoteTimeCounter >= 0f)
         {
-            StopCoroutine(JumpCoroutine());
             StartCoroutine(JumpCoroutine());
+            StopCoroutine(JumpCoroutine());
+            StartCoroutine(JumpCooldown());
+            StopCoroutine(JumpCooldown());
         }
     }
 
@@ -135,8 +137,20 @@ public class Movement : MonoBehaviour
         degree = angle;
     }
 
-    private void RotateCameraRight()
+    private void OnRotateCameraRight()
+    {
+        transform.Rotate(transform.up, -90);
+    }
+
+    private void OnRotateCameraLeft()
     {
         transform.Rotate(transform.up, 90);
+    }
+
+    private IEnumerator JumpCooldown()
+    {
+        isJumping = true;
+        yield return new WaitForSeconds(0.8f);
+        isJumping = false;
     }
 }

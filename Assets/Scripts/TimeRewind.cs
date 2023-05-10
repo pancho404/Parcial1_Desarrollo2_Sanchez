@@ -109,7 +109,7 @@ public class TimeRewind : MonoBehaviour
         while (now - start < rewindDuration)
         {
             rigidbody.isKinematic = true;
-            transform.position = Vector3.Lerp(transform.position, shadow.transform.position, percentageComplete * Time.deltaTime);
+            transform.position = Vector3.Lerp(transform.position, shadow.transform.position+(shadow.transform.position-transform.position), percentageComplete * Time.deltaTime);
             yield return null;
             now = Time.time;
         }
