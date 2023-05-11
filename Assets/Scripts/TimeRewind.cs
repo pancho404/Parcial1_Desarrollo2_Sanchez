@@ -114,7 +114,6 @@ public class TimeRewind : MonoBehaviour
             now = Time.time;
         }
         //transform.position=shadow.transform.position; 
-        rigidbody.isKinematic = false;
         rewindTime = 0.0f;
     }
 

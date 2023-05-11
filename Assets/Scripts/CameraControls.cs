@@ -5,25 +5,28 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 public class CameraControls : MonoBehaviour
 {
+    [Header("Setup")]
     [SerializeField] private GameObject feet;
-    [SerializeField] private float speed = 0.2f;
+    [SerializeField] private float speed = 2f;
     [SerializeField] private AnimationCurve rotationCurve;
     [SerializeField] private Rigidbody rigidbody;
+    [SerializeField] private AnimationCurve animation;
+
 
     private Vector3[] cameraPositions = new Vector3[4];
+    private Vector3 firstPosition = new Vector3(15, 0, 0);
     private Vector3 nextPosition;
     private Vector3 previousPosition;
-    private float rotationValue;
     private int counter = 1;
-    float degrees = 90;
+    private float percentageComplete;
 
     // Start is called before the first frame update
     void Start()
     {
-        cameraPositions[0] = feet.transform.localPosition;
-        cameraPositions[1] = cameraPositions[0] + new Vector3(15, 0, 0);
-        cameraPositions[2] = cameraPositions[1] + new Vector3(-15, 0, 15);
-        cameraPositions[3] = cameraPositions[2] + new Vector3(15, 0, -15);
+        cameraPositions[0] = transform.localPosition;
+        //cameraPositions[1] = cameraPositions[0] + firstPosition;
+        //cameraPositions[2] = cameraPositions[1] + new Vector3(-firstPosition.x, firstPosition.y, firstPosition.x);
+        //cameraPositions[3] = cameraPositions[2] + new Vector3(firstPosition.x, firstPosition.y, -firstPosition.x);
         Debug.Log(feet.transform.localPosition);
         Debug.Log(transform.localPosition);
         Debug.Log(cameraPositions[0]);
@@ -34,14 +37,18 @@ public class CameraControls : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //rotationValue = rotationCurve.Evaluate(speed * Time.deltaTime);
         transform.LookAt(feet.transform.position);
     }
 
     void OnRotateCameraLeft(InputValue input)
     {
-        previousPosition = cameraPositions[counter];
-        counter--;
+        percentageComplete = animation.Evaluate(Time.time);
+        //previousPosition = cameraPositions[counter];
+        previousPosition = transform.localPosition - firstPosition;
+        if (counter > counter - 1)
+        {
+            counter--;
+        }
         if (counter == 3)
         {
             counter = 0;
@@ -49,15 +56,18 @@ public class CameraControls : MonoBehaviour
         StartCoroutine(SlerpCamera(previousPosition));
         StopCoroutine(SlerpCamera(previousPosition));
 
-
-        // transform.RotateAround(player.transform.position, player.transform.up, 90.0f);
-
     }
     void OnRotateCameraRight(InputValue input)
     {
-        nextPosition = cameraPositions[counter];
+        percentageComplete = animation.Evaluate(Time.time);
+
+        nextPosition = transform.localPosition + firstPosition;
+        //nextPosition = cameraPositions[counter];
         Debug.Log(nextPosition);
-        counter++;
+        if (counter < counter + 1)
+        {
+            counter++;
+        }
         if (counter >= 3)
         {
             counter = 0;
@@ -72,17 +82,18 @@ public class CameraControls : MonoBehaviour
         var start = Time.time;
         Vector3 distance = position - transform.position;
         float duration = distance.magnitude / speed;
-        while (now - start < duration)
+        while (now - start <= duration)
         {
             now = Time.time;
-            transform.position = Vector3.Slerp(transform.position, position, (now - start) / duration);
+            transform.position = Vector3.Slerp(transform.position, position, percentageComplete*Time.deltaTime);
             yield return null;
         }
         transform.position = position;
-
+        now = 0.0f;
     }
 
 
 
 
 }
+

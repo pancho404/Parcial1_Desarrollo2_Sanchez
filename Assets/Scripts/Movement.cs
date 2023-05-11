@@ -14,23 +14,24 @@ public class Movement : MonoBehaviour
     [Header("Setup")]
     [SerializeField] Rigidbody rb;
     [SerializeField] GameObject feet;
+    [SerializeField] Camera mainCamera;
 
     [Header("Movement")]
     [SerializeField] float minJumpDistance = 0.1f;
-    [SerializeField] private float speed = 1.0f;
+    [SerializeField] private float speed = 6.0f;
     [SerializeField] private float dash = 10.0f;
     [SerializeField] private float jumpForce = 5.0f;
     [SerializeField] private float speedMultiplier = 2.0f;
     [SerializeField] private float coyoteTime = 0.2f;
     [SerializeField] private float coyoteTimeCounter;
-    private RaycastHit hit;
-    private FezManager.FacingDirection facingDirection;
-    private float degree = 0;
-    private bool isDashInput = false;
     private Vector3 currentMovement;
+    private RaycastHit hit;
+    private bool isDashInput = false;
     public bool isJumping = false;
 
-    private float timeElapsed;
+    [Header("Rotation")]
+    private float leftDegree = 90;
+    private float rightDegree = -90;
 
     private void Start()
     {
@@ -42,6 +43,7 @@ public class Movement : MonoBehaviour
     private void Update()
     {
         MainMovement();
+       // transform.LookAt(mainCamera.transform.position);
     }
 
     private void MainMovement()
@@ -71,7 +73,6 @@ public class Movement : MonoBehaviour
         if (!feet)
             yield break;
 
-
         while (true)
         {
             if (IsGrounded(out hit))
@@ -100,19 +101,7 @@ public class Movement : MonoBehaviour
         var movement = input.Get<Vector2>();
         currentMovement.x = movement.x;
         currentMovement.z = movement.y;
-    }
-
-    public void OnSprint(InputValue input)
-    {
-        if (input.isPressed)
-        {
-            speed *= speedMultiplier;
-        }
-        else
-        {
-            speed /= speedMultiplier;
-        }
-    }
+    }    
 
     public void OnDash(InputValue input)
     {
@@ -121,22 +110,21 @@ public class Movement : MonoBehaviour
 
     private void FixedUpdate()
     {
-
         if (isDashInput)
         {
             rb.AddForce(currentMovement * dash, ForceMode.Impulse);
             isDashInput = false;
         }
     }
+    
 
-    private void UpdateToFacingDirection(FezManager.FacingDirection newDirection, float angle)
-    {
-        facingDirection = newDirection;
-        degree = angle;
-    }
+    //private void OnRotateCameraRight()
+    //{
+    //    transform.Rotate(transform.up, rightDegree);
+    //}
 
-    private void RotateCameraRight()
-    {
-        transform.Rotate(transform.up, 90);
-    }
+    //private void OnRotateCameraLeft()
+    //{
+    //    transform.Rotate(transform.up, leftDegree);
+    //}
 }
